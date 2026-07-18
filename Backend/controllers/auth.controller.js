@@ -91,6 +91,44 @@ export const verifyOtp = async (req,res) => {
     });
 };
 
+export const resendOtp = async (req, res) => {
+    const { email } = req.body;
+
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+        return res.status(400).json({
+            message: "No such user exists."
+        });
+    }
+
+    if (user.verified) {
+        return res.status(400).json({
+            message: "This account is already verified. Please log in."
+        });
+    }
+
+    const otp = generateOTP();
+    await otpModel.deleteMany({ email });
+    await otpModel.create({
+        email,
+        user: user._id,
+        otp: otp
+    });
+
+    const html = getEmailHTML({ OTP: otp });
+    await sendEmail(email, "Drawkitect - Verify your email", `Your OTP is ${otp}`, html);
+
+    return res.status(200).json({
+        message: "OTP resent successfully.",
+        user: {
+            username: user.username,
+            email: user.email,
+            verified: false
+        }
+    });
+};
+
 export const login = async (req,res) => {
     const { identifier, password } = req.body;
 

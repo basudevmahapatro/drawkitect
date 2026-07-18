@@ -6,10 +6,6 @@ if(!process.env.MONGO_URI){
     throw new Error("Couldnt get MONGO_URI from .env file");
 }
 
-if(!process.env.BCRYPT_SALT_ROUNDS){
-    throw new Error("Couldnt get BCRYPT_SALT_ROUNDS from .env file");
-}
-
 if(!process.env.GOOGLE_OAUTH_CLIENT_ID){
     throw new Error("Couldnt get GOOGLE_OAUTH_CLIENT_ID from .env file");
 }
@@ -32,7 +28,6 @@ if(!process.env.JWT_SECRET){
 
 export const config ={
     MONGO_URI : process.env.MONGO_URI,
-    BCRYPT_SALT_ROUNDS : process.env.BCRYPT_SALT_ROUNDS,
     GOOGLE_OAUTH_CLIENT_ID : process.env.GOOGLE_OAUTH_CLIENT_ID,
     GOOGLE_OAUTH_CLIENT_SECRET : process.env.GOOGLE_OAUTH_CLIENT_SECRET,
     GOOGLE_OAUTH_REFRESH_TOKEN : process.env.GOOGLE_OAUTH_REFRESH_TOKEN,
