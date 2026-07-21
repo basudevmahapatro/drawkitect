@@ -10,9 +10,8 @@ function Board(){
     const {elements, boardMouseDownHandler, boardMouseMoveHandler, currentActionType, boardMouseUpHandler, textAreaBlurHandler,undoHandler,redoHandler}  = useContext(boardContext);
     const {toolboxState} = useContext(toolboxContext);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const canvas = canvasRef.current;
-        const context = canvas.getContext("2d");
         canvas.height = window.innerHeight;
         canvas.width = window.innerWidth;
     }, []);

@@ -35,3 +35,39 @@ export const deleteCanvas = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
+export const getCanvasById = async (req, res) => {
+    const { userId } = req;
+    const { id } = req.params;
+    try {
+        const canvas = await canvasModel.findOne({
+            _id: id,
+            $or: [{ owner: userId }, { sharedWith: userId }]
+        });
+        if (!canvas) {
+            return res.status(404).json({ message: "Canvas not found or you do not have permission to view it." });
+        }
+        res.status(200).json(canvas);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+export const updateCanvas = async (req, res) => {
+    const { userId } = req;
+    const { id } = req.params;
+    const { elements } = req.body;
+    try {
+        const canvas = await canvasModel.findOneAndUpdate(
+            { _id: id, $or: [{ owner: userId }, { sharedWith: userId }] },
+            { elements },
+            { new: true }
+        );
+        if (!canvas) {
+            return res.status(404).json({ message: "Canvas not found or you do not have permission to edit it." });
+        }
+        res.status(200).json(canvas);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};

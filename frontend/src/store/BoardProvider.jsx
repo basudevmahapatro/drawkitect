@@ -132,10 +132,14 @@ const boardReducer = (state, action) => {
     }
 };
 
-const BoardProvider = ({ children }) => {
+const BoardProvider = ({ children, initialElements = [] }) => {
     // const [activeToolItem, setActiveToolItem]  = useState("LINE");
     // const [elements, setElements] = useState([]);
-    const [boardState, dispatchBoardAction] = useReducer(boardReducer, initialBoardState);
+    const [boardState, dispatchBoardAction] = useReducer(boardReducer, {
+        ...initialBoardState,
+        elements: initialElements,
+        history: [initialElements]
+    });
 
     const changeToolHandler = (toolItem) => {
         dispatchBoardAction({

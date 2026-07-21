@@ -4,10 +4,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion, AnimatePresence } from 'motion/react';
 import { MoreVertical, Edit2, Trash2, Clock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CanvasCard = ({ canvas, onRename, onDelete }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -26,7 +28,7 @@ const CanvasCard = ({ canvas, onRename, onDelete }) => {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className='w-full'
     >
-      <Card className='p-0 w-full gap-0 border overflow-visible shadow-sm hover:shadow-md transition-shadow relative cursor-pointer'>
+      <Card onClick={() => navigate(`/canvas/${canvas._id || canvas.id}`)} className='p-0 w-full gap-0 border overflow-visible shadow-sm hover:shadow-md transition-shadow relative cursor-pointer'>
 
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -82,7 +84,10 @@ const CanvasCard = ({ canvas, onRename, onDelete }) => {
 
             <div className="relative" ref={menuRef}>
               <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsMenuOpen(!isMenuOpen);
+                }}
                 className="p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors cursor-pointer"
               >
                 <MoreVertical className="h-5 w-5" />
@@ -108,7 +113,8 @@ const CanvasCard = ({ canvas, onRename, onDelete }) => {
                     </button> */}
                     <div className="h-px bg-gray-100 w-full" />
                     <button
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         setIsMenuOpen(false);
                         onDelete(canvas._id || canvas.id);
                       }}
