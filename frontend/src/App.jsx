@@ -1,26 +1,58 @@
-import './App.css'
-import {Routes, Route} from 'react-router-dom'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import ForgotPassword from './pages/ForgotPassword'
-import Dashboard from './pages/Dashboard'
-import VerifyOtp from './pages/VerifyOtp'
-import RegisterLayout from './layouts/RegisterLayout'
+import './App.css';
+import React, { useEffect } from 'react';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
+
+import { AuthProvider, useAuth } from './store/AuthProvider.jsx';
+import { setupInterceptors } from './utils/setupInterceptors.js';
+import { ProtectedRoute } from './components/ProtectedRoute.jsx';
+
+import Login from './pages/Login.jsx';
+import Register from './pages/Register.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import VerifyOtp from './pages/VerifyOtp.jsx';
+import RegisterLayout from './layouts/RegisterLayout.jsx';
+import CanvasGrid from './components/CanvasGrid';
+import Whiteboard from './pages/Whiteboard.jsx';
+
+const InterceptorConfig = ({ children }) => {
+  const { setAccessToken, logout } = useAuth();
+
+  useEffect(() => {
+    setupInterceptors(setAccessToken, logout);
+  }, [setAccessToken, logout]);
+
+  return <>{children}</>;
+};
 
 function App() {
-
   return (
-    <Routes>
-      <Route path='/login' element={<Login />} />
-      <Route path='/forgotPassword' element={<ForgotPassword />} />
-      <Route path='/dashboard' element={<Dashboard />} />
+    <AuthProvider>
+      <InterceptorConfig>
+        <Routes>
 
-      <Route element={<RegisterLayout />}>
-        <Route path='/register' element={<Register />} />
-        <Route path='/verifyOtp' element={<VerifyOtp />} />
-      </Route>
-    </Routes>
+          <Route path='/login' element={<Login />} />
+          <Route path='/forgotPassword' element={<ForgotPassword />} />
+
+          <Route element={<RegisterLayout />}>
+            <Route path='/register' element={<Register />} />
+            <Route path='/verifyOtp' element={<VerifyOtp />} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path='/workspace' element={<Dashboard />}>
+              <Route index element={<CanvasGrid filterType="home" />} />
+              <Route path="myCanvases" element={<CanvasGrid filterType="owned" />} />
+              <Route path="sharedWithMe" element={<CanvasGrid filterType="shared" />} />
+              <Route path="recents" element={<CanvasGrid filterType="recent" />} />
+            </Route>
+            <Route path='/canvas/:id' element={<Whiteboard />} />
+          </Route>
+
+        </Routes>
+      </InterceptorConfig>
+    </AuthProvider>
   );
 }
 
-export default App
+export default App;

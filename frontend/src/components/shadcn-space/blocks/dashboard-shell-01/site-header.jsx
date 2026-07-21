@@ -14,15 +14,15 @@ export function SiteHeader() {
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center gap-2">
         <SidebarTrigger className="-ml-1 h-8 w-8 cursor-pointer" />
-        <InputGroup className="h-9 rounded-md">
-          <InputGroupInput placeholder="Search" />
-          <InputGroupAddon>
+        {/* <InputGroup className="h-9 rounded-md"> */}
+        {/* <InputGroupInput placeholder="Search" /> */}
+        {/* <InputGroupAddon>
             <SearchIcon />
           </InputGroupAddon>
-        </InputGroup>
+        </InputGroup> */}
       </div>
       <div className="flex items-center gap-3">
-        <NotificationDropdown
+        {/* <NotificationDropdown
           defaultOpen={false}
           align="center"
           trigger={
@@ -30,7 +30,7 @@ export function SiteHeader() {
               className="rounded-full p-2 hover:bg-accent relative before:absolute before:bottom-0 before:left-1/2 before:z-10 before:w-2 before:h-2 before:rounded-full before:bg-red-500 before:top-1 cursor-pointer">
               <BellRing className="size-4" />
             </div>
-          } />
+          } /> */}
         <UserDropdown
           defaultOpen={false}
           align="center"

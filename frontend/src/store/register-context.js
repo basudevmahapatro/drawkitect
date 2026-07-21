@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
-const registerContext = createContext ({ 
-    email : "",
-    updateRegisterContext : () => {}
+const registerContext = createContext({
+    email: "",
+    updateRegisterContext: () => { }
 }
 );
 

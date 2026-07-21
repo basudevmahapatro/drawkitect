@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card,CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
@@ -12,8 +12,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
 import z from "zod"
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth, api } from "@/store/AuthProvider";
 import AlertGradientDemo from "../../alert/alert-06";
 
 const loginSchema = z.object({
@@ -25,7 +25,8 @@ const LoginForm = () => {
   const [error, setError] = useState({});
   const [loginAlert, setLoginAlert] = useState(null);
   const navigate = useNavigate();
-  
+  const { login } = useAuth();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -41,15 +42,13 @@ const LoginForm = () => {
     setError({});
     setLoginAlert(null);
     const payload = {
-      "identifier" : data.email,
-      "password" : data.password
+      "identifier": data.email,
+      "password": data.password
     }
     try {
-      const response = await axios.post("http://localhost:3000/api/auth/login", payload, {
-          headers: { 'Content-Type': 'application/json' },
-        });
+      const response = await api.post("/auth/login", payload);
 
-      if(!response.data.accessToken){
+      if (!response.data.accessToken) {
         setLoginAlert({
           id: 1,
           title: "Incorrect credentials",
@@ -59,7 +58,8 @@ const LoginForm = () => {
         return;
       }
 
-      navigate("/dashboard");
+      login(response.data.accessToken, response.data.user);
+      navigate("/workspace/home");
     } catch (requestError) {
       setLoginAlert({
         id: 1,
@@ -77,10 +77,8 @@ const LoginForm = () => {
       className="bg-foreground dark:bg-background min-h-screen flex items-center justify-center relative">
       <div
         className="pointer-events-none absolute inset-0 right-0 overflow-hidden md:block hidden">
-        {/* Outer big circle */}
         <div
           className="absolute left-1/1 top-0 h-650 w-650 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10" />
-        {/* Inner circle */}
         <div
           className="absolute left-1/1 top-0 h-175 w-175 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground dark:bg-background" />
       </div>
@@ -116,7 +114,7 @@ const LoginForm = () => {
             )}
             <form onSubmit={(event) => handleSubmit(event)}>
               <FieldGroup className="gap-6">
-                <Field className="flex justify-center">
+                {/* <Field className="flex justify-center">
                   <Button
                     variant="outline"
                     type="button"
@@ -131,7 +129,7 @@ const LoginForm = () => {
                 <FieldSeparator
                   className="*:data-[slot=field-separator-content]:bg-card text-sm text-muted-foreground bg-transparent">
                   <span className="px-4">or sign in with</span>
-                </FieldSeparator>
+                </FieldSeparator> */}
 
                 <div className="flex flex-col gap-4">
                   <Field className="gap-1.5">
@@ -144,7 +142,7 @@ const LoginForm = () => {
                       placeholder="Enter your email"
                       required
                       className="dark:bg-background h-9 shadow-xs" />
-                      {error.email && <p className="text-xs text-red-500">{error.email[0]}</p>}
+                    {error.email && <p className="text-xs text-red-500">{error.email[0]}</p>}
                   </Field>
                   <Field className="gap-1.5">
                     <FieldLabel htmlFor="password" className="text-sm text-muted-foreground font-normal">
@@ -158,13 +156,13 @@ const LoginForm = () => {
                       placeholder="Enter your password"
                       required
                       className="dark:bg-background h-9 shadow-xs" />
-                      {error.password && <p className="text-xs text-red-500">{error.password[0]}</p>}
+                    {error.password && <p className="text-xs text-red-500">{error.password[0]}</p>}
                   </Field>
                 </div>
 
-                <Link to="/forgotPassword" className="flex justify-center text-sm text-card-foreground font-medium text-end">
+                {/* <Link to="/forgotPassword" className="flex justify-center text-sm text-card-foreground font-medium text-end">
                   Forgot password?
-                </Link>
+                </Link> */}
 
                 <Field className="gap-4">
                   <Button

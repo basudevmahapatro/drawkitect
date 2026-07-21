@@ -10,15 +10,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CircleUserRound, CreditCard, ReceiptText, Settings, LogOut } from "lucide-react";
+import { useAuth } from "@/store/AuthProvider";
 
 const PROFILE_ITEMS = [
   { label: "My Profile", icon: CircleUserRound },
-  { label: "My Subscription", icon: CreditCard },
-  { label: "My Invoice", icon: ReceiptText },
-];
-
-const SETTINGS_ITEMS = [
-  { label: "Account Settings", icon: Settings },
 ];
 
 const LOGOUT_ITEM = {
@@ -35,6 +30,8 @@ const UserDropdown = ({
   defaultOpen,
   align = "end"
 }) => {
+  const { user, logout } = useAuth();
+
   return (
     <div className="flex items-center justify-center">
       <DropdownMenu defaultOpen={defaultOpen}>
@@ -50,7 +47,7 @@ const UserDropdown = ({
                   <AvatarImage
                     src="https://images.shadcnspace.com/assets/profiles/user-11.jpg"
                     alt="David McMichael" />
-                  <AvatarFallback>DM</AvatarFallback>
+                  <AvatarFallback>{user?.username?.substring(0, 2).toUpperCase() || 'U'}</AvatarFallback>
                 </Avatar>
                 <span
                   className="ring-card absolute right-0 bottom-0 size-2 rounded-full bg-green-600 ring-2" />
@@ -58,10 +55,10 @@ const UserDropdown = ({
 
               <div className="flex flex-col">
                 <span className="text-popover-foreground text-sm font-medium">
-                  David McMichael
+                  {user?.username || 'User'}
                 </span>
                 <span className="text-muted-foreground text-sm">
-                  david@shadcnspace.com
+                  {user?.email || ''}
                 </span>
               </div>
             </DropdownMenuLabel>
@@ -70,31 +67,16 @@ const UserDropdown = ({
           <DropdownMenuSeparator />
 
           {/* Main Links */}
-          <DropdownMenuGroup>
+          {/* <DropdownMenuGroup>
             {PROFILE_ITEMS.map(({ label, icon: Icon }) => (
               <DropdownMenuItem key={label} className={itemClass}>
                 <Icon size={20} />
                 <span>{label}</span>
               </DropdownMenuItem>
             ))}
-          </DropdownMenuGroup>
+          </DropdownMenuGroup> */}
 
-          <DropdownMenuSeparator />
-
-          {/* Settings */}
-          <DropdownMenuGroup>
-            {SETTINGS_ITEMS.map(({ label, icon: Icon }) => (
-              <DropdownMenuItem key={label} className={itemClass}>
-                <Icon size={20} />
-                <span>{label}</span>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuGroup>
-
-          <DropdownMenuSeparator />
-
-          {/* Logout */}
-          <DropdownMenuItem variant="destructive" className={itemClass}>
+          <DropdownMenuItem variant="destructive" className={itemClass} onClick={logout}>
             <LOGOUT_ITEM.icon size={20} />
             <span>{LOGOUT_ITEM.label}</span>
           </DropdownMenuItem>

@@ -1,4 +1,3 @@
-// src/layouts/RegisterLayout.jsx
 import { Outlet } from "react-router-dom";
 import RegisterProvider from "@/store/RegisterProvider";
 

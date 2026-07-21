@@ -16,12 +16,13 @@ import {
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function NavMain({
   items
 }) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   // Recursive render function
   const renderItem = (item) => {
@@ -76,13 +77,14 @@ export function NavMain({
             <SidebarMenuItem>
               <SidebarMenuButton
                 tooltip={item.title}
-                className={cn("rounded-lg text-sm px-3 py-2 h-9 ", isActive
+                onClick={() => item.href && item.href !== "#" && navigate(item.href)}
+                className={cn("rounded-lg text-sm px-3 py-2 h-9 cursor-pointer", isActive
                   ? "bg-primary hover:bg-primary dark:bg-blue-500 text-white dark:hover:bg-blue-500 hover:text-white"
                   : "")}>
                 {item.icon && <item.icon />}
-                <a href={item.href} className="w-full">
+                <span className="w-full">
                   {item.title}
-                </a>
+                </span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -118,7 +120,12 @@ export function NavMain({
     if (item.title) {
       return (
         <SidebarMenuSubItem key={item.title} className="w-full">
-          <SidebarMenuSubButton className="w-full" render={<a href={item.href}>{item.title}</a>} />
+          <SidebarMenuSubButton 
+            className="w-full cursor-pointer" 
+            onClick={() => item.href && item.href !== "#" && navigate(item.href)}
+          >
+            {item.title}
+          </SidebarMenuSubButton>
         </SidebarMenuSubItem>
       );
     }
