@@ -36,7 +36,7 @@ const Dashboard = () => {
                         <TextRevealMotion text={`Welcome to your workspace, ${user.username}!`} />
                         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                             <DialogTrigger asChild>
-                                <Button className="shadow-lg hover:shadow-xl transition-all duration-300 bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 h-11 w-full sm:w-auto cursor-pointer">
+                                <Button className="shadow-lg hover:shadow-xl transition-all duration-300 bg-black hover:bg-black/90 text-white rounded-full px-6 h-11 w-full sm:w-auto cursor-pointer">
                                     <Plus className="mr-2 h-5 w-5" />
                                     New Canvas
                                 </Button>

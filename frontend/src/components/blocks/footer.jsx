@@ -12,7 +12,7 @@ export function Footer() {
           Jump into a collaborative workspace. Create unlimited canvases, invite your team, and securely save your diagrams.
         </p>
         <div>
-          <Button size="lg" className="mt-4 bg-[#4F200D] text-[#F6F1E9] hover:bg-[#4F200D]/90 shadow-md" asChild>
+          <Button size="lg" className="mt-4 bg-black text-white hover:bg-black/90 shadow-md" asChild>
             <Link to="/workspace">Start Drawing</Link>
           </Button>
         </div>

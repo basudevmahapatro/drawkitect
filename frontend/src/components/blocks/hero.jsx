@@ -46,7 +46,7 @@ export const Hero = () => {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4 lg:flex-nowrap">
-            <Button size="lg" className="gap-2 text-base h-12 px-8 bg-[#4F200D] text-[#F6F1E9] hover:bg-[#4F200D]/90 shadow-md" asChild>
+            <Button size="lg" className="gap-2 text-base h-12 px-8 bg-black text-white hover:bg-black/90 shadow-md" asChild>
               <Link to="/workspace">
                 Start Drawing
                 <ArrowRight className="w-4 h-4" />
